@@ -19,11 +19,15 @@ transport = RequestsTransport()
 url = f"{vault_url}/secrets"
 params = {"api-version": api_version, "maxresults": max_results}
 
-# Fetch all secrets with pagination
+# Initialize variables
 all_secrets = []
 next_link = None
+page_count = 0  # Page counter
 
+# Fetch all secrets with pagination
 while True:
+    page_count += 1  # Increment page count
+
     if next_link:
         # Fetch the next page using nextLink
         request = HttpRequest("GET", next_link, headers=headers)
@@ -41,9 +45,13 @@ while True:
         all_secrets.append(secret["id"])
         print(f"Secret: {secret['id']}")
     
+    # Print page count
+    print(f"Page {page_count} retrieved")
+
     # Check for nextLink
     next_link = data.get("nextLink")
     if not next_link:
         break
 
-print(f"\nTotal Secrets Retrieved: {len(all_secrets)}")
+print(f"\nTotal Pages Retrieved: {page_count}")
+print(f"Total Secrets Retrieved: {len(all_secrets)}")
