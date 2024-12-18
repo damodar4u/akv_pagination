@@ -1,4 +1,4 @@
-from azure.identity import DefaultAzureCredential
+from azure.identity import ClientSecretCredential
 from azure.core.rest import HttpRequest
 from azure.core.pipeline.transport import RequestsTransport
 
@@ -7,8 +7,13 @@ vault_url = "https://<YourKeyVaultName>.vault.azure.net/"
 api_version = "7.5"
 max_results = 25  # Azure enforced maximum
 
-# Authenticate
-credential = DefaultAzureCredential()
+# Replace with your credentials
+tenant_id = "<Your-Tenant-ID>"
+client_id = "<Your-Client-ID>"
+client_secret = "<Your-Client-Secret>"
+
+# Authenticate using ClientSecretCredential
+credential = ClientSecretCredential(tenant_id=tenant_id, client_id=client_id, client_secret=client_secret)
 token = credential.get_token("https://vault.azure.net/.default").token
 
 # Headers
